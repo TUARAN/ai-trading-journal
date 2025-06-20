@@ -1,9 +1,9 @@
 import { ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { 
-  BarChart3, 
-  TrendingUp, 
-  Bitcoin, 
+  Terminal, 
+  Cpu, 
+  Database, 
   Home,
   Menu,
   X
@@ -15,10 +15,10 @@ interface LayoutProps {
 }
 
 const navigation = [
-  { name: '仪表板', href: '/', icon: Home },
-  { name: '股市', href: '/stocks', icon: BarChart3 },
-  { name: '期货', href: '/futures', icon: TrendingUp },
-  { name: '加密', href: '/crypto', icon: Bitcoin },
+  { name: 'TERMINAL', href: '/', icon: Home },
+  { name: 'NODE_A', href: '/stocks', icon: Terminal },
+  { name: 'NODE_B', href: '/futures', icon: Cpu },
+  { name: 'NODE_C', href: '/crypto', icon: Database },
 ]
 
 export default function Layout({ children }: LayoutProps) {
@@ -26,16 +26,16 @@ export default function Layout({ children }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black">
       {/* Mobile sidebar */}
       <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
-        <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-white">
-          <div className="flex h-16 items-center justify-between px-4">
-            <h1 className="text-xl font-bold text-gray-900">AI Trading Journal</h1>
+        <div className="fixed inset-0 bg-black bg-opacity-90" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-gray-900 border-r border-green-600">
+          <div className="flex h-16 items-center justify-between px-4 border-b border-green-600">
+            <h1 className="text-xl font-mono font-bold text-green-400">CLI_ANALYTICS</h1>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-green-400 hover:text-green-300"
             >
               <X size={24} />
             </button>
@@ -47,16 +47,16 @@ export default function Layout({ children }: LayoutProps) {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
+                  className={`group flex items-center px-2 py-2 text-sm font-mono font-bold rounded border ${
                     isActive
-                      ? 'bg-primary-100 text-primary-900'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-green-600 text-black border-green-500'
+                      : 'text-green-400 hover:bg-gray-800 hover:text-green-300 border-transparent'
                   }`}
                   onClick={() => setSidebarOpen(false)}
                 >
                   <item.icon
                     className={`mr-3 h-5 w-5 ${
-                      isActive ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500'
+                      isActive ? 'text-black' : 'text-green-400 group-hover:text-green-300'
                     }`}
                   />
                   {item.name}
@@ -64,14 +64,20 @@ export default function Layout({ children }: LayoutProps) {
               )
             })}
           </nav>
+          <div className="p-4 border-t border-green-600">
+            <div className="flex items-center text-green-400 text-sm">
+              <div className="status-indicator status-online"></div>
+              <span className="font-mono">SYSTEM_ONLINE</span>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Desktop sidebar */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
-        <div className="flex flex-col flex-grow bg-white border-r border-gray-200">
-          <div className="flex h-16 items-center px-4">
-            <h1 className="text-xl font-bold text-gray-900">AI Trading Journal</h1>
+        <div className="flex flex-col flex-grow bg-gray-900 border-r border-green-600">
+          <div className="flex h-16 items-center px-4 border-b border-green-600">
+            <h1 className="text-xl font-mono font-bold text-green-400">CLI_ANALYTICS</h1>
           </div>
           <nav className="flex-1 space-y-1 px-2 py-4">
             {navigation.map((item) => {
@@ -80,15 +86,15 @@ export default function Layout({ children }: LayoutProps) {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
+                  className={`group flex items-center px-2 py-2 text-sm font-mono font-bold rounded border ${
                     isActive
-                      ? 'bg-primary-100 text-primary-900'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      ? 'bg-green-600 text-black border-green-500'
+                      : 'text-green-400 hover:bg-gray-800 hover:text-green-300 border-transparent'
                   }`}
                 >
                   <item.icon
                     className={`mr-3 h-5 w-5 ${
-                      isActive ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500'
+                      isActive ? 'text-black' : 'text-green-400 group-hover:text-green-300'
                     }`}
                   />
                   {item.name}
@@ -96,22 +102,28 @@ export default function Layout({ children }: LayoutProps) {
               )
             })}
           </nav>
+          <div className="p-4 border-t border-green-600">
+            <div className="flex items-center text-green-400 text-sm">
+              <div className="status-indicator status-online"></div>
+              <span className="font-mono">SYSTEM_ONLINE</span>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Main content */}
       <div className="lg:pl-64">
         {/* Mobile header */}
-        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm lg:hidden">
+        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-green-600 bg-gray-900 px-4 shadow-sm lg:hidden">
           <button
             type="button"
-            className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+            className="-m-2.5 p-2.5 text-green-400 lg:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu size={24} />
           </button>
-          <div className="flex-1 text-sm font-semibold leading-6 text-gray-900">
-            AI Trading Journal
+          <div className="flex-1 text-sm font-mono font-semibold leading-6 text-green-400">
+            CLI_ANALYTICS
           </div>
         </div>
 

@@ -10,8 +10,8 @@ export default function StocksPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">股市交易记录</h1>
-          <p className="text-gray-600">记录与AI交易员关于股市的交互和交易决策</p>
+          <h1 className="text-2xl font-bold text-gray-900">市场A数据分析</h1>
+          <p className="text-gray-600">记录与AI助手关于市场A的交互和决策分析</p>
         </div>
         <button className="btn-primary flex items-center">
           <Plus className="h-4 w-4 mr-2" />
@@ -22,12 +22,12 @@ export default function StocksPage() {
       {/* 统计概览 */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="card">
-          <h3 className="text-sm font-medium text-gray-600">总交易数</h3>
+          <h3 className="text-sm font-medium text-gray-600">总记录数</h3>
           <p className="text-2xl font-bold text-gray-900">{stockTrades.length}</p>
         </div>
         <div className="card">
-          <h3 className="text-sm font-medium text-gray-600">盈利交易</h3>
-          <p className="text-2xl font-bold text-success-600">
+          <h3 className="text-sm font-medium text-gray-600">成功记录</h3>
+          <p className="text-2xl font-bold text-green-600">
             {stockTrades.filter(t => t.profitLoss && t.profitLoss > 0).length}
           </p>
         </div>
@@ -50,7 +50,7 @@ export default function StocksPage() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <input
               type="text"
-              placeholder="搜索股票代码或公司名称..."
+              placeholder="搜索代码或名称..."
               className="input-field pl-10"
             />
           </div>
@@ -61,15 +61,15 @@ export default function StocksPage() {
         </div>
       </div>
 
-      {/* 交易记录 */}
+      {/* 记录列表 */}
       <div className="card">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">交易记录</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">数据记录</h2>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  股票
+                  代码
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   类型
@@ -105,7 +105,7 @@ export default function StocksPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 text-xs rounded-full ${
-                      trade.type === 'buy' ? 'bg-success-100 text-success-800' : 'bg-danger-100 text-danger-800'
+                      trade.type === 'buy' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
                       {trade.type.toUpperCase()}
                     </span>
@@ -118,7 +118,7 @@ export default function StocksPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`text-sm font-medium ${
-                      trade.profitLoss && trade.profitLoss >= 0 ? 'text-success-600' : 'text-danger-600'
+                      trade.profitLoss && trade.profitLoss >= 0 ? 'text-green-600' : 'text-red-600'
                     }`}>
                       {trade.profitLoss ? `$${trade.profitLoss}` : '--'}
                     </span>
@@ -136,7 +136,7 @@ export default function StocksPage() {
                     {trade.date}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <Link to={`/record/${trade.id}`} className="text-primary-600 hover:text-primary-900">
+                    <Link to={`/record/${trade.id}`} className="text-blue-600 hover:text-blue-900">
                       查看详情
                     </Link>
                   </td>
@@ -156,8 +156,8 @@ export default function StocksPage() {
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center space-x-2">
                   <span className={`px-2 py-1 text-xs rounded-full ${
-                    interaction.sentiment === 'positive' ? 'bg-success-100 text-success-800' :
-                    interaction.sentiment === 'negative' ? 'bg-danger-100 text-danger-800' :
+                    interaction.sentiment === 'positive' ? 'bg-green-100 text-green-800' :
+                    interaction.sentiment === 'negative' ? 'bg-red-100 text-red-800' :
                     'bg-gray-100 text-gray-800'
                   }`}>
                     {interaction.sentiment}
