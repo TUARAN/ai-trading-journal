@@ -1,149 +1,195 @@
-import { Plus, Filter, Search } from 'lucide-react'
-import { sampleTradingRecords, sampleAIInteractions } from '../data/sampleData'
+import React, { useState } from 'react'
+import { Cpu, Plus, Search, Download } from 'lucide-react'
+import { sampleTradingRecords } from '../data/sampleData'
 import { Link } from 'react-router-dom'
+import { useTerminology } from '../hooks/useTerminology'
 
 export default function FuturesPage() {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filterStatus, setFilterStatus] = useState('all')
+  
   const futuresTrades = sampleTradingRecords.filter(trade => trade.market === 'futures')
-  const futuresInteractions = sampleAIInteractions.filter(interaction => interaction.market === 'futures')
+  
+  const { getDatasetInfo, getActionInfo, getStatusInfo, getOperationInfo } = useTerminology()
+  const datasetInfo = getDatasetInfo('datasetB')
+  
+  const filteredTrades = futuresTrades.filter(trade => {
+    const matchesSearch = trade.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesFilter = filterStatus === 'all' || trade.status === filterStatus
+    return matchesSearch && matchesFilter
+  })
+
+  const totalValue = futuresTrades.reduce((sum, t) => sum + (t.profitLoss || 0), 0)
+  const winningTrades = futuresTrades.filter(t => t.profitLoss && t.profitLoss > 0).length
+  const losingTrades = futuresTrades.filter(t => t.profitLoss && t.profitLoss < 0).length
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">期货交易记录</h1>
-          <p className="text-gray-600">记录与AI交易员关于期货的交互和交易决策</p>
-        </div>
-        <button className="btn-primary flex items-center">
-          <Plus className="h-4 w-4 mr-2" />
-          新增记录
-        </button>
+      {/* 页面标题 */}
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">{datasetInfo.name} - 时序数据分析</h1>
+        <p className="text-gray-600">{datasetInfo.description}</p>
       </div>
 
-      {/* 统计概览 */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="card">
-          <h3 className="text-sm font-medium text-gray-600">总交易数</h3>
-          <p className="text-2xl font-bold text-gray-900">{futuresTrades.length}</p>
-        </div>
-        <div className="card">
-          <h3 className="text-sm font-medium text-gray-600">盈利交易</h3>
-          <p className="text-2xl font-bold text-success-600">
-            {futuresTrades.filter(t => t.profitLoss && t.profitLoss > 0).length}
-          </p>
-        </div>
-        <div className="card">
-          <h3 className="text-sm font-medium text-gray-600">总收益</h3>
-          <p className="text-2xl font-bold text-gray-900">
-            ${futuresTrades.reduce((sum, t) => sum + (t.profitLoss || 0), 0).toLocaleString()}
-          </p>
-        </div>
-        <div className="card">
-          <h3 className="text-sm font-medium text-gray-600">AI交互</h3>
-          <p className="text-2xl font-bold text-gray-900">{futuresInteractions.length}</p>
-        </div>
-      </div>
-
-      {/* 搜索和筛选 */}
-      <div className="card">
-        <div className="flex items-center space-x-4">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <input
-              type="text"
-              placeholder="搜索期货合约..."
-              className="input-field pl-10"
-            />
+      {/* 统计卡片 */}
+      <div className="grid-responsive">
+        <div className="stat-card stat-card-primary">
+          <div className="flex items-center">
+            <div className="p-3 rounded-lg bg-white/80 border border-white/50">
+              <Cpu className="h-6 w-6 text-gray-700" />
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">总数据量</p>
+              <p className="text-2xl font-bold text-gray-900">{totalValue.toLocaleString()}</p>
+            </div>
           </div>
-          <button className="btn-secondary flex items-center">
-            <Filter className="h-4 w-4 mr-2" />
-            筛选
-          </button>
+        </div>
+        
+        <div className="stat-card stat-card-success">
+          <div className="flex items-center">
+            <div className="p-3 rounded-lg bg-white/80 border border-white/50">
+              <Cpu className="h-6 w-6 text-gray-700" />
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">成功处理</p>
+              <p className="text-2xl font-bold text-gray-900">{winningTrades}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="stat-card stat-card-danger">
+          <div className="flex items-center">
+            <div className="p-3 rounded-lg bg-white/80 border border-white/50">
+              <Cpu className="h-6 w-6 text-gray-700" />
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">异常处理</p>
+              <p className="text-2xl font-bold text-gray-900">{losingTrades}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="stat-card stat-card-warning">
+          <div className="flex items-center">
+            <div className="p-3 rounded-lg bg-white/80 border border-white/50">
+              <Cpu className="h-6 w-6 text-gray-700" />
+            </div>
+            <div className="ml-4">
+              <p className="text-sm font-medium text-gray-600">处理记录</p>
+              <p className="text-2xl font-bold text-gray-900">{futuresTrades.length}</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* 交易记录 */}
-      <div className="card">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">交易记录</h2>
+      {/* 操作栏 */}
+      <div className="admin-card">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex items-center space-x-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="搜索数据..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="all">全部状态</option>
+              <option value="open">{getStatusInfo('open')}</option>
+              <option value="closed">{getStatusInfo('closed')}</option>
+            </select>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <button className="btn-secondary flex items-center">
+              <Download className="h-4 w-4 mr-2" />
+              {getActionInfo('exportData')}
+            </button>
+            <button className="btn-primary flex items-center">
+              <Plus className="h-4 w-4 mr-2" />
+              {getActionInfo('addRecord')}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 数据表格 */}
+      <div className="admin-card">
+        <div className="admin-card-header">
+          <div>
+            <h2 className="admin-card-title">处理记录</h2>
+            <p className="admin-card-subtitle">{datasetInfo.name}的所有处理记录</p>
+          </div>
+        </div>
+        
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="data-table">
+            <thead>
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  合约
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  类型
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  价格
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  数量
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  收益
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  风险等级
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  状态
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  操作
-                </th>
+                <th>{getOperationInfo('dataIdentifier')}</th>
+                <th>{getOperationInfo('processingType')}</th>
+                <th>价格</th>
+                <th>{getOperationInfo('dataVolume')}</th>
+                <th>{getOperationInfo('processingResult')}</th>
+                <th>状态</th>
+                <th>{getOperationInfo('processingTime')}</th>
+                <th>操作</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {futuresTrades.map((trade) => (
-                <tr key={trade.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">{trade.symbol}</div>
-                      <div className="text-sm text-gray-500">{trade.strategy}</div>
+            <tbody>
+              {filteredTrades.map((trade) => (
+                <tr key={trade.id}>
+                  <td>
+                    <div className="flex items-center">
+                      <span className="font-semibold text-gray-900">{trade.symbol}</span>
+                      <span className={`tag tag-yellow ml-2`}>
+                        {datasetInfo.name}
+                      </span>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 text-xs rounded-full ${
-                      trade.type === 'buy' ? 'bg-success-100 text-success-800' : 'bg-danger-100 text-danger-800'
+                  <td>
+                    <span className={`tag ${
+                      trade.type === 'buy' ? 'tag-green' : 'tag-red'
                     }`}>
-                      {trade.type.toUpperCase()}
+                      {trade.type === 'buy' ? getOperationInfo('dataInput') : getOperationInfo('dataOutput')}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${trade.price}
+                  <td>
+                    <span className="text-sm text-gray-900">
+                      {trade.price}
+                    </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {trade.quantity}
+                  <td>
+                    <span className="text-sm text-gray-900">{trade.quantity}</span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td>
                     <span className={`text-sm font-medium ${
-                      trade.profitLoss && trade.profitLoss >= 0 ? 'text-success-600' : 'text-danger-600'
+                      trade.profitLoss && trade.profitLoss >= 0 ? 'text-green-600' : 'text-red-600'
                     }`}>
-                      {trade.profitLoss ? `$${trade.profitLoss}` : '--'}
+                      {trade.profitLoss ? `${trade.profitLoss}` : '--'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 text-xs rounded-full ${
-                      trade.riskLevel === 'low' ? 'bg-success-100 text-success-800' :
-                      trade.riskLevel === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                      'bg-danger-100 text-danger-800'
+                  <td>
+                    <span className={`tag ${
+                      trade.status === 'open' ? 'tag-yellow' : 'tag-green'
                     }`}>
-                      {trade.riskLevel}
+                      {getStatusInfo(trade.status)}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 text-xs rounded-full ${
-                      trade.status === 'closed' ? 'bg-gray-100 text-gray-800' :
-                      trade.status === 'open' ? 'bg-blue-100 text-blue-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
-                      {trade.status}
-                    </span>
+                  <td>
+                    <span className="text-sm text-gray-500">{trade.date}</span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <Link to={`/record/${trade.id}`} className="text-primary-600 hover:text-primary-900">
-                      查看详情
+                  <td>
+                    <Link to={`/record/${trade.id}`} className="text-blue-600 hover:text-blue-900">
+                      {getActionInfo('viewDetails')}
                     </Link>
                   </td>
                 </tr>
@@ -151,51 +197,12 @@ export default function FuturesPage() {
             </tbody>
           </table>
         </div>
-      </div>
-
-      {/* AI交互记录 */}
-      <div className="card">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">AI交互记录</h2>
-        <div className="space-y-4">
-          {futuresInteractions.map((interaction) => (
-            <div key={interaction.id} className="p-4 bg-gray-50 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-2">
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    interaction.sentiment === 'positive' ? 'bg-success-100 text-success-800' :
-                    interaction.sentiment === 'negative' ? 'bg-danger-100 text-danger-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    {interaction.sentiment}
-                  </span>
-                  {interaction.symbol && (
-                    <span className="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
-                      {interaction.symbol}
-                    </span>
-                  )}
-                </div>
-                <span className="text-sm text-gray-500">
-                  {new Date(interaction.timestamp).toLocaleString()}
-                </span>
-              </div>
-              <div className="mb-3">
-                <p className="text-sm font-medium text-gray-900 mb-1">问题：</p>
-                <p className="text-sm text-gray-700">{interaction.userQuestion}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-900 mb-1">AI回答：</p>
-                <p className="text-sm text-gray-700">{interaction.aiResponse}</p>
-              </div>
-              <div className="mt-3 flex flex-wrap gap-1">
-                {interaction.tags.map((tag, index) => (
-                  <span key={index} className="px-2 py-1 text-xs bg-gray-200 text-gray-700 rounded">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        
+        {filteredTrades.length === 0 && (
+          <div className="text-center py-8">
+            <p className="text-gray-500">暂无数据记录</p>
+          </div>
+        )}
       </div>
     </div>
   )
