@@ -1,4 +1,3 @@
-import React from 'react'
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -6,9 +5,7 @@ import {
   Database, 
   Cpu, 
   BarChart3,
-  PieChart,
   LineChart,
-  Users,
   Clock,
   AlertTriangle,
   CheckCircle,
@@ -17,12 +14,9 @@ import {
   Globe,
   Server
 } from 'lucide-react'
-import { sampleDashboardData } from '../data/sampleData'
-import { Link } from 'react-router-dom'
 import { useTerminology } from '../contexts/TerminologyContext'
 
 export default function Dashboard() {
-  const { overallStats, recentTrades, recentInteractions, topPerformers } = sampleDashboardData
   const { mode, getSystemInfo, getMetricInfo, getSystemStatusInfo, getActivityInfo, getDatasetInfo } = useTerminology()
   const systemInfo = getSystemInfo()
 
@@ -32,25 +26,6 @@ export default function Dashboard() {
   console.log('Dataset A:', getDatasetInfo('datasetA'))
   console.log('Dataset B:', getDatasetInfo('datasetB'))
   console.log('Dataset C:', getDatasetInfo('datasetC'))
-
-  const StatCard = ({ title, value, change, icon: Icon, type = 'primary' }: any) => (
-    <div className={`stat-card stat-card-${type}`}>
-      <div className="flex items-center">
-        <div className="p-3 rounded-lg bg-white/80 border border-white/50">
-          <Icon className="h-6 w-6 text-gray-700" />
-        </div>
-        <div className="ml-4">
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
-          {change && (
-            <p className={`text-sm font-medium ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {change >= 0 ? '+' : ''}{change}%
-            </p>
-          )}
-        </div>
-      </div>
-    </div>
-  )
 
   return (
     <div className="space-y-6">

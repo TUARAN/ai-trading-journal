@@ -340,16 +340,6 @@ export const TerminologyProvider: React.FC<{ children: ReactNode }> = ({ childre
     return getTerm(`filters.${filter}.${mode}`)
   }
 
-  // 获取商品信息
-  const getCommodityInfo = (commodity: string) => {
-    return getTerm(`commodities.${commodity}.${mode}`)
-  }
-
-  // 获取关键词信息
-  const getKeywordInfo = (keyword: string) => {
-    return getTerm(`keywords.${keyword}.${mode}`)
-  }
-
   const value = {
     mode,
     toggleMode,

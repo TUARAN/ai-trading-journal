@@ -1,10 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { 
   MessageSquare, 
   Search, 
-  Filter, 
   Download,
-  Send,
   Bot,
   User,
   ThumbsUp,
@@ -13,7 +11,7 @@ import {
   Tag
 } from 'lucide-react'
 import { sampleAIInteractions } from '../data/sampleData'
-import { useTerminology } from '../hooks/useTerminology'
+import { useTerminology } from '../contexts/TerminologyContext'
 
 export default function AIInteraction() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -22,7 +20,7 @@ export default function AIInteraction() {
   const [currentPage, setCurrentPage] = useState(1)
   const interactionsPerPage = 10
 
-  const { getPageInfo, getMetricInfo, getActionInfo, getFilterInfo, getStatusInfo, getDatasetInfo } = useTerminology()
+  const { getPageInfo, getMetricInfo, getActionInfo, getFilterInfo, getDatasetInfo } = useTerminology()
 
   // 过滤交互记录
   const filteredInteractions = sampleAIInteractions.filter(interaction => {
@@ -43,7 +41,6 @@ export default function AIInteraction() {
   const totalInteractions = filteredInteractions.length
   const positiveInteractions = filteredInteractions.filter(i => i.sentiment === 'positive').length
   const negativeInteractions = filteredInteractions.filter(i => i.sentiment === 'negative').length
-  const neutralInteractions = filteredInteractions.filter(i => i.sentiment === 'neutral').length
 
   return (
     <div className="space-y-6">

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { 
   Terminal, 
@@ -8,9 +8,7 @@ import {
   Menu,
   X,
   BarChart3,
-  TrendingUp,
   Activity,
-  Settings,
   User,
   Bell,
   MessageSquare

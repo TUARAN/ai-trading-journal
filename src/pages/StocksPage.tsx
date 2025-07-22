@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import { Plus, Search, Download } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
+import { Search, Download } from 'lucide-react'
 import { sampleTradingRecords, stocksTrendData, stocksAiLogs, stocksNotes } from '../data/sampleData'
 import { Link } from 'react-router-dom'
 import { useTerminology } from '../contexts/TerminologyContext'
@@ -13,8 +13,7 @@ export default function StocksPage() {
   const [filterStatus, setFilterStatus] = useState('all')
 
   const stockTrades = sampleTradingRecords.filter(trade => trade.market === 'stocks' && trade.symbol.toLowerCase().includes(selectedStock))
-  const { getDatasetInfo, getActionInfo, getStatusInfo, getOperationInfo, mode, getCommodityInfo } = useTerminology()
-  const datasetInfo = getDatasetInfo('datasetA')
+  const { getActionInfo, getStatusInfo, getOperationInfo, mode, getCommodityInfo } = useTerminology()
 
   const filteredTrades = stockTrades.filter(trade => {
     const matchesSearch = trade.symbol.toLowerCase().includes(searchTerm.toLowerCase())
@@ -24,7 +23,6 @@ export default function StocksPage() {
 
   const totalValue = stockTrades.reduce((sum, t) => sum + (t.profitLoss || 0), 0)
   const winningTrades = stockTrades.filter(t => t.profitLoss && t.profitLoss > 0).length
-  const losingTrades = stockTrades.filter(t => t.profitLoss && t.profitLoss < 0).length
 
   // 时间线数据
   const logs = (stocksAiLogs as Record<string, { id: number; time: string; content: string }[]>)[selectedStock] || []

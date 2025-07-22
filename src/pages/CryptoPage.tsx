@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import { Plus, Search, Download } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
+import { Search, Download } from 'lucide-react'
 import { sampleTradingRecords, cryptoTrendData, cryptoAiLogs, cryptoNotes } from '../data/sampleData'
 import { Link } from 'react-router-dom'
 import { useTerminology } from '../contexts/TerminologyContext'
@@ -13,8 +13,7 @@ export default function CryptoPage() {
   const [filterStatus, setFilterStatus] = useState('all')
 
   const cryptoTrades = sampleTradingRecords.filter(trade => trade.market === 'crypto' && trade.symbol.toLowerCase().includes(selectedCrypto))
-  const { getDatasetInfo, getActionInfo, getStatusInfo, getOperationInfo, mode, getCommodityInfo } = useTerminology()
-  const datasetInfo = getDatasetInfo('datasetC')
+  const { getActionInfo, getStatusInfo, getOperationInfo, mode, getCommodityInfo } = useTerminology()
 
   const filteredTrades = cryptoTrades.filter(trade => {
     const matchesSearch = trade.symbol.toLowerCase().includes(searchTerm.toLowerCase())
@@ -24,7 +23,6 @@ export default function CryptoPage() {
 
   const totalValue = cryptoTrades.reduce((sum, t) => sum + (t.profitLoss || 0), 0)
   const winningTrades = cryptoTrades.filter(t => t.profitLoss && t.profitLoss > 0).length
-  const losingTrades = cryptoTrades.filter(t => t.profitLoss && t.profitLoss < 0).length
 
   // 时间线数据
   const logs = (cryptoAiLogs as Record<string, { id: number; time: string; content: string }[]>)[selectedCrypto] || []

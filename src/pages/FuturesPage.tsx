@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Cpu, Plus, Search, Download } from 'lucide-react'
-import { sampleTradingRecords, FUTURES_COMMODITIES, futuresTrendData, aiLogs, notes } from '../data/sampleData'
+import { sampleTradingRecords, futuresTrendData, aiLogs, notes } from '../data/sampleData'
 import { Link } from 'react-router-dom'
 import { useTerminology } from '../contexts/TerminologyContext'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'

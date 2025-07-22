@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { 
   Search, 
-  Filter, 
   Download, 
   Eye, 
   Edit, 
@@ -12,7 +11,7 @@ import {
   Activity
 } from 'lucide-react'
 import { sampleTradingRecords } from '../data/sampleData'
-import { useTerminology } from '../hooks/useTerminology'
+import { useTerminology } from '../contexts/TerminologyContext'
 
 export default function TradingRecord() {
   const [searchTerm, setSearchTerm] = useState('')
