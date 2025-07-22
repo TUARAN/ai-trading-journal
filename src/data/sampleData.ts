@@ -57,6 +57,121 @@ export const sampleTradingRecords: TradingRecord[] = [
   }
 ]
 
+// 期货品种 mock 交易记录
+sampleTradingRecords.push(
+  // 纯碱
+  {
+    id: 'f1',
+    market: 'futures',
+    symbol: 'SODA2406',
+    type: 'buy',
+    price: 2100,
+    quantity: 5,
+    date: '2024-06-01',
+    aiAnalysis: '纯碱短线看多，支撑位2100。',
+    userQuestion: '纯碱现在适合做多吗？',
+    aiResponse: '建议逢低吸纳，目标2180。',
+    strategy: '短线多头',
+    riskLevel: 'medium',
+    profitLoss: 400,
+    status: 'closed',
+    notes: '冲高回落，止盈部分多单',
+    tags: ['纯碱', '短线', '多头']
+  },
+  {
+    id: 'f2',
+    market: 'futures',
+    symbol: 'SODA2407',
+    type: 'sell',
+    price: 2180,
+    quantity: 3,
+    date: '2024-06-05',
+    aiAnalysis: '纯碱高位震荡，注意风险。',
+    userQuestion: '纯碱还能追多吗？',
+    aiResponse: '建议高位减仓，防止回调。',
+    strategy: '高抛低吸',
+    riskLevel: 'high',
+    profitLoss: -150,
+    status: 'open',
+    notes: '高位回落，部分止损',
+    tags: ['纯碱', '震荡', '风险']
+  },
+  // 玻璃
+  {
+    id: 'f3',
+    market: 'futures',
+    symbol: 'GLASS2406',
+    type: 'buy',
+    price: 1800,
+    quantity: 8,
+    date: '2024-06-01',
+    aiAnalysis: '玻璃价格波动加剧，建议谨慎操作。',
+    userQuestion: '玻璃短线怎么看？',
+    aiResponse: '短线有反弹，但需控制仓位。',
+    strategy: '短线反弹',
+    riskLevel: 'medium',
+    profitLoss: 120,
+    status: 'closed',
+    notes: '反弹未能延续，及时止盈',
+    tags: ['玻璃', '短线', '反弹']
+  },
+  {
+    id: 'f4',
+    market: 'futures',
+    symbol: 'GLASS2407',
+    type: 'sell',
+    price: 1870,
+    quantity: 4,
+    date: '2024-06-05',
+    aiAnalysis: '玻璃短期有回调风险。',
+    userQuestion: '玻璃还能做多吗？',
+    aiResponse: '建议观望，等待回调结束。',
+    strategy: '观望为主',
+    riskLevel: 'high',
+    profitLoss: -80,
+    status: 'open',
+    notes: '盘中跳水，止损离场',
+    tags: ['玻璃', '回调', '观望']
+  },
+  // 玉米
+  {
+    id: 'f5',
+    market: 'futures',
+    symbol: 'CORN2406',
+    type: 'buy',
+    price: 2600,
+    quantity: 10,
+    date: '2024-06-01',
+    aiAnalysis: '玉米价格突破2600，关注多头延续。',
+    userQuestion: '玉米还能涨吗？',
+    aiResponse: '建议持有多单，关注上方压力。',
+    strategy: '趋势跟随',
+    riskLevel: 'medium',
+    profitLoss: 300,
+    status: 'closed',
+    notes: '多单持有，逢高减仓',
+    tags: ['玉米', '趋势', '多头']
+  },
+  {
+    id: 'f6',
+    market: 'futures',
+    symbol: 'CORN2407',
+    type: 'sell',
+    price: 2650,
+    quantity: 6,
+    date: '2024-06-05',
+    aiAnalysis: '玉米震荡偏强，逢低做多。',
+    userQuestion: '玉米短线怎么看？',
+    aiResponse: '建议逢低做多，目标2650。',
+    strategy: '区间操作',
+    riskLevel: 'low',
+    profitLoss: 100,
+    status: 'open',
+    notes: '震荡偏强，继续持有',
+    tags: ['玉米', '震荡', '区间']
+  }
+)
+
 export const sampleAIInteractions: AIInteraction[] = [
   {
     id: '1',
@@ -138,4 +253,148 @@ export const sampleDashboardData: DashboardData = {
     { symbol: 'GC2403', profitLoss: 890, market: 'futures' },
     { symbol: 'ETH/USD', profitLoss: 650, market: 'crypto' }
   ]
-} 
+}
+
+// 期货品种列表
+export const FUTURES_COMMODITIES = [
+  { key: 'soda', terminologyKey: 'soda', name: '纯碱' },
+  { key: 'glass', terminologyKey: 'glass', name: '玻璃' },
+  { key: 'corn', terminologyKey: 'corn', name: '玉米' },
+];
+
+// 各品种行情趋势 mock 数据（折线图）
+export const futuresTrendData = {
+  soda: [
+    { date: '2025-07-01', price: 2100 },
+    { date: '2025-07-02', price: 2120 },
+    { date: '2025-07-03', price: 2080 },
+    { date: '2025-07-04', price: 2150 },
+    { date: '2025-07-05', price: 2180 },
+  ],
+  glass: [
+    { date: '2025-07-01', price: 1800 },
+    { date: '2025-07-02', price: 1825 },
+    { date: '2025-07-03', price: 1810 },
+    { date: '2025-07-04', price: 1850 },
+    { date: '2025-07-05', price: 1870 },
+  ],
+  corn: [
+    { date: '2025-07-01', price: 2600 },
+    { date: '2025-07-02', price: 2620 },
+    { date: '2025-07-03', price: 2590 },
+    { date: '2025-07-04', price: 2630 },
+    { date: '2025-07-05', price: 2650 },
+  ],
+};
+
+// 各品种大模型日志 mock 数据
+export const aiLogs = {
+  soda: [
+    { id: 1, time: '2025-07-05 09:00', content: '模型建议：纯碱短线看多，支撑位2100。' },
+    { id: 2, time: '2025-07-04 14:30', content: '检测到资金流入，建议关注多头机会。' },
+  ],
+  glass: [
+    { id: 1, time: '2025-07-05 10:00', content: '玻璃价格波动加剧，建议谨慎操作。' },
+    { id: 2, time: '2025-07-03 16:00', content: '模型提示：短期有回调风险。' },
+  ],
+  corn: [
+    { id: 1, time: '2025-07-05 11:00', content: '玉米价格突破2600，关注多头延续。' },
+    { id: 2, time: '2025-07-02 13:00', content: '模型建议：逢低吸纳，目标2650。' },
+  ],
+};
+
+// 各品种心得笔记 mock 数据
+export const notes = {
+  soda: [
+    { id: 1, time: '2025-07-05 09:30', content: '今日纯碱冲高回落，盘中止盈部分多单。' },
+    { id: 2, time: '2025-07-03 15:00', content: '纯碱区间震荡，等待方向选择。' },
+  ],
+  glass: [
+    { id: 1, time: '2025-07-05 10:30', content: '玻璃盘中跳水，止损离场。' },
+    { id: 2, time: '2025-07-04 11:00', content: '短线反弹未能延续，观望为主。' },
+  ],
+  corn: [
+    { id: 1, time: '2025-07-05 11:30', content: '玉米多单持有，关注上方压力。' },
+    { id: 2, time: '2025-07-01 14:00', content: '玉米震荡偏强，逢低做多。' },
+  ],
+};
+
+// 股票行情趋势 mock 数据
+export const stocksTrendData = {
+  aapl: [
+    { date: '2025-07-01', price: 150 },
+    { date: '2025-07-02', price: 152 },
+    { date: '2025-07-03', price: 151 },
+    { date: '2025-07-04', price: 153 },
+    { date: '2025-07-05', price: 155 },
+  ],
+  tsla: [
+    { date: '2025-07-01', price: 700 },
+    { date: '2025-07-02', price: 710 },
+    { date: '2025-07-03', price: 705 },
+    { date: '2025-07-04', price: 715 },
+    { date: '2025-07-05', price: 720 },
+  ],
+};
+
+export const stocksAiLogs = {
+  aapl: [
+    { id: 1, time: '2025-07-05 09:00', content: 'AI建议：AAPL短线看多，支撑位150。' },
+    { id: 2, time: '2025-07-03 14:30', content: '检测到资金流入，建议关注多头机会。' },
+  ],
+  tsla: [
+    { id: 1, time: '2025-07-05 10:00', content: 'TSLA价格波动加剧，建议谨慎操作。' },
+    { id: 2, time: '2025-07-04 16:00', content: 'AI提示：短期有回调风险。' },
+  ],
+};
+
+export const stocksNotes = {
+  aapl: [
+    { id: 1, time: '2025-07-05 09:30', content: '今日AAPL冲高回落，盘中止盈部分多单。' },
+    { id: 2, time: '2025-07-03 15:00', content: 'AAPL区间震荡，等待方向选择。' },
+  ],
+  tsla: [
+    { id: 1, time: '2025-07-05 10:30', content: 'TSLA盘中跳水，止损离场。' },
+    { id: 2, time: '2025-07-04 11:00', content: '短线反弹未能延续，观望为主。' },
+  ],
+};
+
+// 加密货币行情趋势 mock 数据
+export const cryptoTrendData = {
+  btc: [
+    { date: '2025-07-01', price: 60000 },
+    { date: '2025-07-02', price: 60500 },
+    { date: '2025-07-03', price: 61000 },
+    { date: '2025-07-04', price: 60800 },
+    { date: '2025-07-05', price: 61500 },
+  ],
+  eth: [
+    { date: '2025-07-01', price: 3500 },
+    { date: '2025-07-02', price: 3550 },
+    { date: '2025-07-03', price: 3530 },
+    { date: '2025-07-04', price: 3580 },
+    { date: '2025-07-05', price: 3600 },
+  ],
+};
+
+export const cryptoAiLogs = {
+  btc: [
+    { id: 1, time: '2025-07-05 09:00', content: 'AI建议：BTC短线看多，支撑位60000。' },
+    { id: 2, time: '2025-07-03 14:30', content: '检测到资金流入，建议关注多头机会。' },
+  ],
+  eth: [
+    { id: 1, time: '2025-07-05 10:00', content: 'ETH价格波动加剧，建议谨慎操作。' },
+    { id: 2, time: '2025-07-04 16:00', content: 'AI提示：短期有回调风险。' },
+  ],
+};
+
+export const cryptoNotes = {
+  btc: [
+    { id: 1, time: '2025-07-05 09:30', content: '今日BTC冲高回落，盘中止盈部分多单。' },
+    { id: 2, time: '2025-07-03 15:00', content: 'BTC区间震荡，等待方向选择。' },
+  ],
+  eth: [
+    { id: 1, time: '2025-07-05 10:30', content: 'ETH盘中跳水，止损离场。' },
+    { id: 2, time: '2025-07-04 11:00', content: '短线反弹未能延续，观望为主。' },
+  ],
+}; 

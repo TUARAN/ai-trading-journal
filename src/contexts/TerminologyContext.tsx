@@ -16,6 +16,8 @@ interface TerminologyContextType {
   getSystemStatusInfo: (status: string) => string
   getActivityInfo: (activity: string) => string
   getFilterInfo: (filter: string) => string
+  getCommodityInfo: (commodity: string) => string
+  getKeywordInfo: (keyword: string) => string
 }
 
 const TerminologyContext = createContext<TerminologyContextType | undefined>(undefined)
@@ -338,6 +340,16 @@ export const TerminologyProvider: React.FC<{ children: ReactNode }> = ({ childre
     return getTerm(`filters.${filter}.${mode}`)
   }
 
+  // 获取商品信息
+  const getCommodityInfo = (commodity: string) => {
+    return getTerm(`commodities.${commodity}.${mode}`)
+  }
+
+  // 获取关键词信息
+  const getKeywordInfo = (keyword: string) => {
+    return getTerm(`keywords.${keyword}.${mode}`)
+  }
+
   const value = {
     mode,
     toggleMode,
@@ -351,7 +363,9 @@ export const TerminologyProvider: React.FC<{ children: ReactNode }> = ({ childre
     getStatusInfo,
     getSystemStatusInfo,
     getActivityInfo,
-    getFilterInfo
+    getFilterInfo,
+    getCommodityInfo: (commodity: string) => getTerm(`commodities.${commodity}.${mode}`),
+    getKeywordInfo: (keyword: string) => getTerm(`keywords.${keyword}.${mode}`)
   }
 
   return (

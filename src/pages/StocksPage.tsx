@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
-import { Terminal, Plus, Search, Filter, Download } from 'lucide-react'
-import { sampleTradingRecords, sampleAIInteractions } from '../data/sampleData'
+import React, { useState, useEffect, useMemo } from 'react'
+import { Plus, Search, Download } from 'lucide-react'
+import { sampleTradingRecords, stocksTrendData, stocksAiLogs, stocksNotes } from '../data/sampleData'
 import { Link } from 'react-router-dom'
-import { useTerminology } from '../hooks/useTerminology'
+import { useTerminology } from '../contexts/TerminologyContext'
+import TabSwitcher from '../components/TabSwitcher'
+import TrendChart from '../components/TrendChart'
+import Timeline, { TimelineItem } from '../components/Timeline'
 
 export default function StocksPage() {
+  const [selectedStock, setSelectedStock] = useState('aapl')
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState('all')
-  
-  const stockTrades = sampleTradingRecords.filter(trade => trade.market === 'stocks')
-  const stockInteractions = sampleAIInteractions.filter(interaction => interaction.market === 'stocks')
-  
-  const { getDatasetInfo, getActionInfo, getStatusInfo, getOperationInfo } = useTerminology()
+
+  const stockTrades = sampleTradingRecords.filter(trade => trade.market === 'stocks' && trade.symbol.toLowerCase().includes(selectedStock))
+  const { getDatasetInfo, getActionInfo, getStatusInfo, getOperationInfo, mode, getCommodityInfo } = useTerminology()
   const datasetInfo = getDatasetInfo('datasetA')
-  
+
   const filteredTrades = stockTrades.filter(trade => {
     const matchesSearch = trade.symbol.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesFilter = filterStatus === 'all' || trade.status === filterStatus
@@ -24,43 +26,59 @@ export default function StocksPage() {
   const winningTrades = stockTrades.filter(t => t.profitLoss && t.profitLoss > 0).length
   const losingTrades = stockTrades.filter(t => t.profitLoss && t.profitLoss < 0).length
 
+  // 时间线数据
+  const logs = (stocksAiLogs as Record<string, { id: number; time: string; content: string }[]>)[selectedStock] || []
+  const notes = (stocksNotes as Record<string, { id: number; time: string; content: string }[]>)[selectedStock] || []
+  const timelineRaw: TimelineItem[] = [
+    ...logs.map((l: { id: number; time: string; content: string }) => ({ ...l, type: 'aiLog' as const })),
+    ...notes.map((n: { id: number; time: string; content: string }) => ({ ...n, type: 'note' as const })),
+  ]
+  const allMonths = Array.from(new Set(timelineRaw.map(item => item.time.slice(0, 7)))).sort()
+  const [selectedMonth, setSelectedMonth] = useState(allMonths[0] || '')
+
+  // 顶部Tab配置，支持模式切换
+  const STOCK_TABS = useMemo(() => [
+    { key: 'aapl', label: mode === 'display' ? getCommodityInfo('aapl') || '数据标签1' : 'AAPL' },
+    { key: 'tsla', label: mode === 'display' ? getCommodityInfo('tsla') || '数据标签2' : 'TSLA' },
+  ], [mode, getCommodityInfo]);
+
+  useEffect(() => {
+    setSelectedStock(STOCK_TABS[0].key)
+    setSelectedMonth(allMonths[0] || '')
+  }, [STOCK_TABS]);
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">{datasetInfo.name}管理</h1>
-          <p className="text-gray-600">{datasetInfo.description}</p>
-        </div>
-        <button className="btn-primary flex items-center">
-          <Plus className="h-4 w-4 mr-2" />
-          {getActionInfo('addRecord')}
-        </button>
-      </div>
-
-      {/* 统计概览 */}
+      {/* 顶部Tab */}
+      <TabSwitcher tabs={STOCK_TABS} value={selectedStock} onChange={setSelectedStock} />
+      {/* 行情趋势图，仅BS模式显示 */}
+      {mode !== 'display' && <TrendChart data={(stocksTrendData as Record<string, { date: string; price: number }[]>)[selectedStock] || []} title={`${selectedStock.toUpperCase()} 行情趋势`} />}
+      {/* 时间线，仅BS模式显示 */}
+      {mode !== 'display' && <Timeline
+        items={timelineRaw}
+        months={allMonths}
+        month={selectedMonth}
+        onMonthChange={setSelectedMonth}
+      />}
+      {/* 统计卡片 */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="card">
-          <h3 className="text-sm font-medium text-gray-600">总记录数</h3>
+          <h3 className="text-sm font-medium text-gray-600">{getOperationInfo('dataRecord')}</h3>
           <p className="text-2xl font-bold text-gray-900">{stockTrades.length}</p>
         </div>
         <div className="card">
-          <h3 className="text-sm font-medium text-gray-600">成功记录</h3>
-          <p className="text-2xl font-bold text-green-600">
-            {stockTrades.filter(t => t.profitLoss && t.profitLoss > 0).length}
-          </p>
+          <h3 className="text-sm font-medium text-gray-600">{getOperationInfo('processingResult')}</h3>
+          <p className="text-2xl font-bold text-green-600">{winningTrades}</p>
         </div>
         <div className="card">
-          <h3 className="text-sm font-medium text-gray-600">总收益</h3>
-          <p className="text-2xl font-bold text-gray-900">
-            {totalValue.toLocaleString()}
-          </p>
+          <h3 className="text-sm font-medium text-gray-600">{getOperationInfo('processingResult')}</h3>
+          <p className="text-2xl font-bold text-gray-900">{totalValue.toLocaleString()}</p>
         </div>
         <div className="card">
           <h3 className="text-sm font-medium text-gray-600">AI交互</h3>
-          <p className="text-2xl font-bold text-gray-900">{stockInteractions.length}</p>
+          <p className="text-2xl font-bold text-gray-900">{logs.length}</p>
         </div>
       </div>
-
       {/* 搜索和筛选 */}
       <div className="card">
         <div className="flex items-center space-x-4">
@@ -89,7 +107,6 @@ export default function StocksPage() {
           </button>
         </div>
       </div>
-
       {/* 记录列表 */}
       <div className="card">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">{getOperationInfo('dataRecord')}</h2>
@@ -128,7 +145,7 @@ export default function StocksPage() {
                 <tr key={trade.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
-                      <div className="text-sm font-medium text-gray-900">{trade.symbol}</div>
+                      <div className="text-sm font-medium text-gray-900">{mode === 'display' ? (getCommodityInfo(trade.symbol.toLowerCase()) || '数据标签') : trade.symbol}</div>
                       <div className="text-sm text-gray-500">{trade.strategy}</div>
                     </div>
                   </td>
@@ -173,51 +190,6 @@ export default function StocksPage() {
               ))}
             </tbody>
           </table>
-        </div>
-      </div>
-
-      {/* AI交互记录 */}
-      <div className="card">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">AI交互记录</h2>
-        <div className="space-y-4">
-          {stockInteractions.map((interaction) => (
-            <div key={interaction.id} className="p-4 bg-gray-50 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center space-x-2">
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    interaction.sentiment === 'positive' ? 'bg-green-100 text-green-800' :
-                    interaction.sentiment === 'negative' ? 'bg-red-100 text-red-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    {interaction.sentiment}
-                  </span>
-                  {interaction.symbol && (
-                    <span className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
-                      {interaction.symbol}
-                    </span>
-                  )}
-                </div>
-                <span className="text-sm text-gray-500">
-                  {new Date(interaction.timestamp).toLocaleString()}
-                </span>
-              </div>
-              <div className="mb-3">
-                <p className="text-sm font-medium text-gray-900 mb-1">问题：</p>
-                <p className="text-sm text-gray-700">{interaction.userQuestion}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-gray-900 mb-1">AI回答：</p>
-                <p className="text-sm text-gray-700">{interaction.aiResponse}</p>
-              </div>
-              <div className="mt-3 flex flex-wrap gap-1">
-                {interaction.tags.map((tag, index) => (
-                  <span key={index} className="px-2 py-1 text-xs bg-gray-200 text-gray-700 rounded">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>

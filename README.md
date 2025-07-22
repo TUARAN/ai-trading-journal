@@ -84,6 +84,13 @@ src/
 - 批量操作和导出
 - 详细记录查看和编辑
 
+## 术语切换功能说明（2024-06 修复）
+
+- 右下角“切换模式”按钮现已全局生效。
+- 所有页面（如 CryptoPage、StocksPage、FuturesPage）的数据标签、Tab 名称、表头等会根据模式（分析/BS）自动刷新。
+- 代码已统一为只使用 `src/contexts/TerminologyContext.tsx` 提供的 `useTerminology`，不再使用 `src/hooks/useTerminology.ts`（该文件已删除）。
+- 如需自定义术语映射，请修改 `src/contexts/TerminologyContext.tsx`。
+
 ## 开发指南
 
 ### 代码规范
