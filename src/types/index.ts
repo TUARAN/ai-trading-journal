@@ -1,56 +1,74 @@
-export interface TradingRecord {
+// 交易记录类型
+export interface Trade {
   id: string
-  market: 'stocks' | 'futures' | 'crypto'
   symbol: string
-  type: 'buy' | 'sell' | 'hold'
-  price: number
+  type: 'buy' | 'sell'
   quantity: number
-  date: string
-  aiAnalysis: string
-  userQuestion: string
-  aiResponse: string
-  strategy: string
-  riskLevel: 'low' | 'medium' | 'high'
-  profitLoss?: number
-  status: 'open' | 'closed' | 'cancelled'
-  notes?: string
-  tags: string[]
-}
-
-export interface MarketStats {
-  totalTrades: number
-  winningTrades: number
-  losingTrades: number
-  totalProfitLoss: number
-  winRate: number
-  averageReturn: number
-  maxDrawdown: number
-}
-
-export interface AIInteraction {
-  id: string
-  timestamp: string
-  userQuestion: string
-  aiResponse: string
+  price: number
+  timestamp: Date
   market: 'stocks' | 'futures' | 'crypto'
-  symbol?: string
-  sentiment: 'positive' | 'negative' | 'neutral'
-  confidence: number
-  tags: string[]
+  status: 'open' | 'closed' | 'cancelled'
+  profit?: number
+  notes?: string
 }
 
-export interface DashboardData {
-  overallStats: MarketStats
-  marketStats: {
-    stocks: MarketStats
-    futures: MarketStats
-    crypto: MarketStats
-  }
-  recentTrades: TradingRecord[]
-  recentInteractions: AIInteraction[]
-  topPerformers: {
-    symbol: string
-    profitLoss: number
-    market: string
-  }[]
+// AI分析建议类型
+export interface AIAnalysis {
+  id: string
+  symbol: string
+  recommendation: 'buy' | 'sell' | 'hold'
+  confidence: number
+  reasoning: string
+  timestamp: Date
+  market: 'stocks' | 'futures' | 'crypto'
+  priceTarget?: number
+  stopLoss?: number
+}
+
+// 市场数据类型
+export interface MarketData {
+  symbol: string
+  price: number
+  change: number
+  changePercent: number
+  volume: number
+  marketCap?: number
+  timestamp: Date
+}
+
+// 投资组合类型
+export interface Portfolio {
+  totalValue: number
+  totalProfit: number
+  profitPercent: number
+  positions: Position[]
+}
+
+// 持仓类型
+export interface Position {
+  symbol: string
+  quantity: number
+  avgPrice: number
+  currentPrice: number
+  marketValue: number
+  profit: number
+  profitPercent: number
+  market: 'stocks' | 'futures' | 'crypto'
+}
+
+// AI对话消息类型
+export interface ChatMessage {
+  id: string
+  role: 'user' | 'assistant'
+  content: string
+  timestamp: Date
+  tradeId?: string
+}
+
+// 系统配置类型
+export interface SystemConfig {
+  theme: 'light' | 'dark'
+  language: 'zh' | 'en'
+  notifications: boolean
+  autoAnalysis: boolean
 } 

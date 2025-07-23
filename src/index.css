@@ -4,209 +4,150 @@
 
 @layer base {
   html {
-    font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
   }
   
   body {
     @apply bg-gray-50 text-gray-900;
-    background-image: 
-      radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
-      radial-gradient(circle at 75% 75%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
-  }
-
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    @apply bg-gray-100;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 rounded;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-400;
   }
 }
 
 @layer components {
-  /* 后台管理系统卡片 */
-  .admin-card {
-    @apply bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-200;
-  }
-
-  .admin-card-header {
-    @apply flex items-center justify-between mb-4 pb-4 border-b border-gray-100;
-  }
-
-  .admin-card-title {
-    @apply text-lg font-semibold text-gray-900;
-  }
-
-  .admin-card-subtitle {
-    @apply text-sm text-gray-500;
-  }
-
-  /* 数据统计卡片 */
-  .stat-card {
-    @apply bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all duration-200;
-  }
-
-  .stat-card-primary {
-    @apply bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200;
-  }
-
-  .stat-card-success {
-    @apply bg-gradient-to-br from-green-50 to-green-100 border-green-200;
-  }
-
-  .stat-card-warning {
-    @apply bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200;
-  }
-
-  .stat-card-danger {
-    @apply bg-gradient-to-br from-red-50 to-red-100 border-red-200;
-  }
-
-  /* 按钮样式 */
+  /* 自定义组件样式 */
   .btn-primary {
-    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg border border-blue-600 transition-all duration-200 shadow-sm hover:shadow-md;
+    @apply px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors;
   }
   
   .btn-secondary {
-    @apply bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium border border-gray-300 py-2 px-4 rounded-lg transition-all duration-200;
-  }
-
-  .btn-success {
-    @apply bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg border border-green-600 transition-all duration-200 shadow-sm hover:shadow-md;
-  }
-
-  .btn-warning {
-    @apply bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-lg border border-yellow-600 transition-all duration-200 shadow-sm hover:shadow-md;
+    @apply px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors;
   }
   
-  /* 表格样式 */
-  .data-table {
-    @apply w-full bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm;
+  .card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-200;
   }
-
-  .data-table th {
-    @apply bg-gray-50 px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200;
+  
+  .metric-card {
+    @apply bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow;
   }
-
-  .data-table td {
-    @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900 border-b border-gray-100;
+  
+  .data-card {
+    @apply bg-white rounded-lg shadow border border-gray-200;
   }
-
-  .data-table tr:hover {
-    @apply bg-gray-50;
-  }
-
-  /* 输入框样式 */
-  .input-field {
-    @apply w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400;
-  }
-
-  /* 标签样式 */
-  .tag {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
-  }
-
-  .tag-blue {
-    @apply bg-blue-100 text-blue-800;
-  }
-
-  .tag-green {
-    @apply bg-green-100 text-green-800;
-  }
-
-  .tag-yellow {
-    @apply bg-yellow-100 text-yellow-800;
-  }
-
-  .tag-red {
-    @apply bg-red-100 text-red-800;
-  }
-
-  .tag-gray {
-    @apply bg-gray-100 text-gray-800;
-  }
-
+  
   /* 状态指示器 */
   .status-indicator {
-    @apply inline-block w-2 h-2 rounded-full mr-2;
+    @apply w-2 h-2 rounded-full;
   }
-
+  
   .status-online {
     @apply bg-green-500;
   }
-
+  
   .status-offline {
     @apply bg-red-500;
   }
-
-  .status-pending {
+  
+  .status-warning {
     @apply bg-yellow-500;
   }
-
-  /* 侧边栏样式 */
-  .sidebar {
-    @apply bg-white border-r border-gray-200 shadow-sm;
+  
+  /* 进度条 */
+  .progress-bar {
+    @apply w-full bg-gray-200 rounded-full h-2 overflow-hidden;
   }
-
-  .sidebar-item {
-    @apply flex items-center px-4 py-3 text-sm font-medium text-gray-600 rounded-lg mx-2 mb-1 transition-all duration-200;
+  
+  .progress-fill {
+    @apply h-2 rounded-full transition-all duration-300;
   }
-
-  .sidebar-item:hover {
+  
+  /* 表格样式 */
+  .table-container {
+    @apply overflow-x-auto shadow ring-1 ring-black ring-opacity-5 rounded-lg;
+  }
+  
+  .table {
+    @apply min-w-full divide-y divide-gray-300;
+  }
+  
+  .table-header {
+    @apply bg-gray-50;
+  }
+  
+  .table-row {
+    @apply hover:bg-gray-50 transition-colors;
+  }
+  
+  /* 聊天消息样式 */
+  .message-user {
+    @apply bg-blue-600 text-white;
+  }
+  
+  .message-assistant {
     @apply bg-gray-100 text-gray-900;
   }
-
-  .sidebar-item.active {
-    @apply bg-blue-50 text-blue-700 border-r-2 border-blue-600;
+  
+  /* 动画 */
+  .fade-in {
+    animation: fadeIn 0.3s ease-in-out;
   }
-
-  /* 导航栏样式 */
-  .navbar {
-    @apply bg-white border-b border-gray-200 shadow-sm;
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-
-  /* 面包屑导航 */
-  .breadcrumb {
-    @apply flex items-center space-x-2 text-sm text-gray-500;
+  
+  .slide-in {
+    animation: slideIn 0.3s ease-out;
   }
-
-  .breadcrumb-item {
-    @apply hover:text-gray-700 transition-colors;
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
   }
-
-  .breadcrumb-separator {
-    @apply text-gray-300;
+  
+  /* 加载动画 */
+  .loading-dots {
+    @apply flex space-x-1;
   }
-
-  /* 数据可视化容器 */
-  .chart-container {
-    @apply bg-white rounded-lg border border-gray-200 p-6 shadow-sm;
+  
+  .loading-dot {
+    @apply w-2 h-2 bg-gray-400 rounded-full animate-bounce;
   }
-
-  /* 加载状态 */
-  .loading-skeleton {
-    @apply animate-pulse bg-gray-200 rounded;
+  
+  .loading-dot:nth-child(2) {
+    animation-delay: 0.1s;
   }
-
-  /* 响应式网格 */
-  .grid-responsive {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+  
+  .loading-dot:nth-child(3) {
+    animation-delay: 0.2s;
   }
+}
 
-  /* 工具提示 */
-  .tooltip {
-    @apply absolute z-10 px-3 py-2 text-sm text-white bg-gray-900 rounded-lg shadow-lg opacity-0 invisible transition-all duration-200;
+@layer utilities {
+  /* 自定义工具类 */
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent;
   }
-
-  .tooltip.show {
-    @apply opacity-100 visible;
+  
+  .bg-gradient-primary {
+    @apply bg-gradient-to-r from-blue-600 to-purple-600;
+  }
+  
+  .shadow-soft {
+    box-shadow: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
+  }
+  
+  .glass-effect {
+    @apply backdrop-blur-sm bg-white/80 border border-white/20;
   }
 } 

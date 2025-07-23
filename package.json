@@ -1,9 +1,9 @@
 {
-  "name": "ai-bs-data-analysis",
+  "name": "ai-trading-assistant",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
-  "description": "AI+BS 数据分析系统 - 专业的大数据分析与管理平台",
+  "description": "AI Trading Assistant - 大模型赋能的智能交易系统",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -11,13 +11,11 @@
     "preview": "vite preview"
   },
   "keywords": [
-    "trading",
-    "ai",
-    "journal",
+    "ai-trading",
+    "trading-assistant",
+    "investment",
     "finance",
-    "stocks",
-    "futures",
-    "crypto"
+    "ai-analysis"
   ],
   "author": "Your Name",
   "license": "MIT",
